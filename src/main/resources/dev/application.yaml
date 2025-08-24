@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: esbcommonservice
+
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.p12
+    key-store-password: password
+
+esb:
+  common:
+    http:
+      ssl-enabled: true
+      connect-timeout: 10
+      read-timeout: 30
+      write-timeout: 30
+      keep-alive-duration: 30
+      max-idle-connections: 1

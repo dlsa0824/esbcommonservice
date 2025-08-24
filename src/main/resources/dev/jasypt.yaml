@@ -1,0 +1,3 @@
+jasypt:
+  encryptor:
+    password: your_jasypt_password
