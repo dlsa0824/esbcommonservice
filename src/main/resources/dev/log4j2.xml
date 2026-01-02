@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="APP_NAME">esbcommonservice</Property>
+        <Property name="log.root.path">logs</Property>
+        <Property name="LOG_ARCHIVE">${log.root.path}/archive</Property>
+
+        <Property name="Console">%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%t] %logger{36} - %msg%n</Property>
+        <Property name="AP_PATTERN">{"timestamp": "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}", "logType": "ap-log", "level": "%-5level", "thread": "%t", "traceId": "%X{traceId}", "message": "%msg", "throwable": "%throwable"}%n</Property>
+        <Property name="INBOUND_PATTERN">{"timestamp": "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}", "logType": "inbound-log", "level": "%-5level", "thread": "%t", "traceId": "%X{traceId}", "inbound-info": %msg, "throwable": "%throwable"}%n</Property>
+        <Property name="OUTBOUND_PATTERN">{"timestamp": "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}", "logType": "outbound-log", "level": "%-5level", "thread": "%t", "traceId": "%X{traceId}", "outbound-info": %msg, "throwable": "%throwable"}%n</Property>
+        <Property name="TRACE_SQL_PATTERN">{"timestamp": "%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}", "logType": "trace-sql-log", "level": "%-5level", "thread": "%t", "traceId": "%X{traceId}", "sql-info": %msg, "throwable": "%throwable"}%n</Property>
+
+        <Property name="FILE_SIZE">500MB</Property>
+        <Property name="MAX_HISTORY">2000</Property>
+
+        <Property name="IF_LAST_MODIFIED_AGE">365D</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- Console Appender -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%t] %logger{36} - %msg%n"/>
+        </Console>
+
+        <!-- ApLog Appender -->
+        <RollingFile name="ApLog" fileName="${log.root.path}/ap.log"
+                     filePattern="${LOG_ARCHIVE}/ap-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${AP_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${MAX_HISTORY}">
+                <Delete basePath="${LOG_ARCHIVE}" maxDepth="1">
+                    <IfFileName glob="ap-*.log.gz"/>
+                    <IfLastModified age="${IF_LAST_MODIFIED_AGE}"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <!-- InboundLog Appender -->
+        <RollingFile name="InboundLog" fileName="${log.root.path}/inbound.log"
+                     filePattern="${LOG_ARCHIVE}/inbound-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${INBOUND_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${MAX_HISTORY}">
+                <Delete basePath="${LOG_ARCHIVE}" maxDepth="1">
+                    <IfFileName glob="inbound-*.log.gz"/>
+                    <IfLastModified age="${IF_LAST_MODIFIED_AGE}"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <!-- OutboundLog Appender -->
+        <RollingFile name="OutboundLog" fileName="${log.root.path}/outbound.log"
+                     filePattern="${LOG_ARCHIVE}/outbound-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${OUTBOUND_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${MAX_HISTORY}">
+                <Delete basePath="${LOG_ARCHIVE}" maxDepth="1">
+                    <IfFileName glob="outbound-*.log.gz"/>
+                    <IfLastModified age="${IF_LAST_MODIFIED_AGE}"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <!-- TraceSqlLog Appender -->
+        <RollingFile name="TraceSqlLog" fileName="${log.root.path}/trace-sql.log"
+                     filePattern="${LOG_ARCHIVE}/trace-sql-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${TRACE_SQL_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${FILE_SIZE}"/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${MAX_HISTORY}">
+                <Delete basePath="${LOG_ARCHIVE}" maxDepth="1">
+                    <IfFileName glob="trace-sql-*.log.gz"/>
+                    <IfLastModified age="${IF_LAST_MODIFIED_AGE}"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <!-- <AppenderRef ref="ApLog"/> -->
+        </Root>
+        <Logger name="InboundLog" level="info" additivity="false">
+            <AppenderRef ref="InboundLog"/>
+        </Logger>
+        <Logger name="OutboundLog" level="info" additivity="false">
+            <AppenderRef ref="OutboundLog"/>
+        </Logger>
+        <Logger name="TraceSqlLog" level="info" additivity="false">
+            <AppenderRef ref="TraceSqlLog"/>
+        </Logger>
+        
+    </Loggers>
+</Configuration>

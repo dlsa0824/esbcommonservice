@@ -4,6 +4,9 @@ import java.io.IOException;
 
 public class HttpClientException extends IOException {
 
+    public HttpClientException() {
+    }
+
     public HttpClientException(String message) {
         super(message);
     }

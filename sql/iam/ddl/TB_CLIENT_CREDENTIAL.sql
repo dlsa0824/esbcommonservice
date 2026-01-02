@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS iam.TB_CLIENT_CREDENTIAL;
+
+CREATE TABLE iam.TB_CLIENT_CREDENTIAL (
+    client_id VARCHAR(255) PRIMARY KEY,
+    client_secret VARCHAR(255) UNIQUE,
+    asset_code VARCHAR(255) NOT NULL,
+    validate_expiration BOOLEAN NOT NULL
+);

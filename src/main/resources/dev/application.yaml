@@ -1,20 +1,112 @@
 spring:
   application:
     name: esbcommonservice
+  env: dev
+#  thymeleaf:
+#    prefix: classpath:/${spring.env}/templates/
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dlsa0824@gmail.com
+    password: ENC(YYPY40oJm3lcOerMod5UeylsscS2DP2zZa760GVmDCM=)
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+      mail.smtp.ssl.trust: smtp.gmail.com
+  datasource:
+    check:
+      enabled: false
+    url: jdbc:postgresql://localhost:5432/mydb?escapeSyntaxCallMode=callIfNoReturn
+    username: postgres
+    password: postgres
+#    driver-class-name: org.postgresql.Driver
+    hikari:
+      driver-class-name: org.postgresql.Driver
+      auto-commit: false
+      minimum-idle: 1
+      maximum-pool-size: 5
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
 
 server:
   port: 8443
   ssl:
     enabled: true
-    key-store: classpath:keystore.p12
-    key-store-password: password
+    key-store: classpath:keystore.jks
+    key-store-password: ENC(tnTMUx45jBTdpYKixSwUAgSQ8YavgQoB) # changeit
+
+jasypt:
+  enabled: true
+  salt:
+    properties: classpath:salt.yaml
+  encryptor:
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
 
 esb:
   common:
     http:
-      ssl-enabled: true
-      connect-timeout: 10
+      ssl-enabled: false
+      connect-timeout: 5
+      write-timeout: 5
       read-timeout: 30
-      write-timeout: 30
+      call-timeout: 30
       keep-alive-duration: 30
       max-idle-connections: 1
+    log:
+      inbound:
+        enabled: true
+        logger: InboundLog
+      outbound:
+        enabled: true
+        logger: OutboundLog
+      trace-sql:
+        enabled: true
+        logger: TraceSqlLog
+    server:
+      prefix-url: 'https://localhost:21815'
+    jwt:
+      secret-key: r8m4b2c9yq1p0zv7h3dksjtfwnexliuz
+      expiration-seconds: 60
+      issuer: indi.daniel
+  mail:
+    template: mailTemplate
+  company:
+    datatbase:
+      schema: company
+  iam:
+    database:
+      schema: iam
+
+springdoc:
+  swagger-ui:
+    enable: true
+    path: /swagger-ui.html
+    operationsSorter: alpha
+    tagsSorter: alpha
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+    version: openapi_3_1
+  info:
+    title: ESB Common Service API
+    version: v1.0.0
+    description: API documentation for ESB Common Service
+  security-schemas:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+    basicAuth:
+      type: http
+      scheme: basic
+  servers:
+    - url: https://localhost:${server.port}
+      description: local host
+    - url: https://esb-common-service.daniel.indi:${server.port}
+      description: sit server

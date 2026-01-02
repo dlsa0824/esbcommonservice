@@ -18,6 +18,8 @@
 		<java.version>21</java.version>
 		<okhttp3.version>4.12.0</okhttp3.version>
 		<jasypt.version>3.0.5</jasypt.version>
+		<springdoc.version>2.8.8</springdoc.version>
+		<jwt.version>0.13.0</jwt.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -50,6 +52,30 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+		<!-- SpringDoc OpenAPI (Swagger UI) -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -66,7 +92,44 @@
 			<artifactId>jasypt-spring-boot-starter</artifactId>
 			<version>${jasypt.version}</version>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+		<dependency>
+    		<groupId>io.jsonwebtoken</groupId>
+    		<artifactId>jjwt-api</artifactId>
+    		<version>${jwt.version}</version>
+		</dependency>
+
+		<dependency>
+    		<groupId>io.jsonwebtoken</groupId>
+    		<artifactId>jjwt-impl</artifactId>
+    		<version>${jwt.version}</version>
+    		<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+    		<groupId>io.jsonwebtoken</groupId>
+    		<artifactId>jjwt-jackson</artifactId>
+    		<version>${jwt.version}</version>
+    		<scope>runtime</scope>
+		</dependency>
+
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
@@ -90,6 +153,9 @@
 				<resources>
 					<resource>
 						<directory>src/main/resources/dev</directory>
+						<includes>
+							<include>**/*</include>
+						</includes>
 					</resource>
 				</resources>
 			</build>
@@ -103,6 +169,9 @@
 				<resources>
 					<resource>
 						<directory>src/main/resources/sit</directory>
+						<includes>
+							<include>**/*</include>
+						</includes>
 					</resource>
 				</resources>
 			</build>
@@ -116,6 +185,9 @@
 				<resources>
 					<resource>
 						<directory>src/main/resources/uat</directory>
+						<includes>
+							<include>**/*</include>
+						</includes>
 					</resource>
 				</resources>
 			</build>
@@ -129,6 +201,9 @@
 				<resources>
 					<resource>
 						<directory>src/main/resources/prod</directory>
+						<includes>
+							<include>**/*</include>
+						</includes>
 					</resource>
 				</resources>
 			</build>

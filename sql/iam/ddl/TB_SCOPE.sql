@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS iam.TB_SCOPE;
+
+CREATE TABLE iam.TB_SCOPE (
+    scope VARCHAR(255) PRIMARY KEY,
+    valid_second INTEGER NOT NULL,
+    use_count INTEGER
+);

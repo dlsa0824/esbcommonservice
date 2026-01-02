@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS iam.TB_CLIENT_SCOPE;
+
+CREATE TABLE iam.TB_CLIENT_SCOPE (
+    client_id VARCHAR(255) NOT NULL,
+    scope VARCHAR(255) NOT NULL,
+    PRIMARY KEY (client_id, scope),
+    FOREIGN KEY (client_id) REFERENCES iam.TB_CLIENT_CREDENTIAL(client_id),
+    FOREIGN KEY (scope) REFERENCES iam.TB_SCOPE(scope)
+);
